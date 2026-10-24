@@ -1,0 +1,47 @@
+[
+  {
+    "a": "random",
+    "b": "nearest",
+    "n": 10,
+    "distance": {
+      "mean_diff": 19.984815721433602,
+      "a_better": 0,
+      "p_wilcoxon": 0.001953125
+    },
+    "time": {
+      "mean_diff": 74.3998,
+      "a_better": 0,
+      "p_wilcoxon": 0.001953125
+    }
+  },
+  {
+    "a": "random",
+    "b": "weighted",
+    "n": 9,
+    "distance": {
+      "mean_diff": 21.326309498217693,
+      "a_better": 0,
+      "p_wilcoxon": 0.00390625
+    },
+    "time": {
+      "mean_diff": 91.4448888888889,
+      "a_better": 0,
+      "p_wilcoxon": 0.00390625
+    }
+  },
+  {
+    "a": "nearest",
+    "b": "weighted",
+    "n": 9,
+    "distance": {
+      "mean_diff": 0.5525574217902675,
+      "a_better": 4,
+      "p_wilcoxon": 0.734375
+    },
+    "time": {
+      "mean_diff": 13.667333333333332,
+      "a_better": 2,
+      "p_wilcoxon": 0.359375
+    }
+  }
+]

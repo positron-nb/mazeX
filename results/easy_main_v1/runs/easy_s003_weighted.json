@@ -1,0 +1,420 @@
+{
+  "run_id": "easy_s003_weighted",
+  "strategy": "weighted",
+  "final_status": "EXIT_REACHED",
+  "reason": "robot in front of the detected exit marker (0.44 m out, -0.27 m lateral)",
+  "exit_success": true,
+  "exit_reported": true,
+  "maze": {
+    "seed": 3,
+    "rows": 4,
+    "cols": 4,
+    "cell_size": 1.0,
+    "loop_fraction": 0.0,
+    "ground_truth_file": "maze_4x4_s3_l0.json",
+    "width": 4.0,
+    "height": 4.0,
+    "solution_length_m": 11.0,
+    "dead_ends": 3
+  },
+  "time_to_first_map_s": 1.558,
+  "exploration_start_sim_s": 7.0,
+  "exploration_time_s": 45.0,
+  "time_to_exit_s": 45.0,
+  "exit_detect_time_s": 38.356,
+  "distance_gt_m": 9.52646884522549,
+  "distance_odom_m": 9.525312734139483,
+  "distance_slam_estimate_m": 9.555267610777868,
+  "distance_ratio": 0.8660426222932265,
+  "coverage": 0.8888230647709321,
+  "goals_sent": 12,
+  "goals_reached": 6,
+  "goals_failed": 0,
+  "goals_failed_detail": {
+    "failed": 0,
+    "timed_out": 0,
+    "stuck": 0,
+    "rejected": 0
+  },
+  "goals_preempted": 2,
+  "goals_resolved_early": 4,
+  "recoveries": 0,
+  "blacklisted_regions": 0,
+  "collision_events": 0,
+  "contact_time_s": 0.0,
+  "contact_partners": [],
+  "near_collision_events": 0,
+  "near_collision_threshold_m": 0.05,
+  "min_clearance_m": 0.1766737272124697,
+  "localization_error_m": {
+    "n": 53,
+    "mean": 0.038029487599270856,
+    "median": 0.03677597088026854,
+    "std": 0.030435927898669758,
+    "min": 3.4787173142092342e-12,
+    "max": 0.08810987205466794
+  },
+  "exit_detection": {
+    "map_x": -0.44644851589763285,
+    "map_y": -1.151762672790986,
+    "world_x": 1.651762672790986,
+    "world_y": 0.05355148410236708,
+    "error_m": 0.15189961227714147
+  },
+  "final_gt_pose": {
+    "x": 1.8246523849569958,
+    "y": 0.517678336500396,
+    "yaw": -3.105161095817386,
+    "cell": [
+      0,
+      1
+    ]
+  },
+  "final_distance_to_door_m": 0.5611315627907907,
+  "coverage_trace": [
+    [
+      2.0,
+      0.0977
+    ],
+    [
+      3.0,
+      0.0977
+    ],
+    [
+      4.0,
+      0.0977
+    ],
+    [
+      5.0,
+      0.0977
+    ],
+    [
+      6.0,
+      0.0977
+    ],
+    [
+      7.0,
+      0.0977
+    ],
+    [
+      8.0,
+      0.0977
+    ],
+    [
+      9.0,
+      0.0977
+    ],
+    [
+      10.0,
+      0.0977
+    ],
+    [
+      11.0,
+      0.0977
+    ],
+    [
+      12.0,
+      0.0977
+    ],
+    [
+      13.0,
+      0.0977
+    ],
+    [
+      14.0,
+      0.0977
+    ],
+    [
+      15.0,
+      0.1621
+    ],
+    [
+      16.0,
+      0.1833
+    ],
+    [
+      17.0,
+      0.1831
+    ],
+    [
+      18.0,
+      0.19
+    ],
+    [
+      19.0,
+      0.2172
+    ],
+    [
+      20.0,
+      0.2547
+    ],
+    [
+      21.0,
+      0.3422
+    ],
+    [
+      22.0,
+      0.347
+    ],
+    [
+      23.0,
+      0.3487
+    ],
+    [
+      24.0,
+      0.3572
+    ],
+    [
+      25.0,
+      0.3703
+    ],
+    [
+      26.0,
+      0.3983
+    ],
+    [
+      27.0,
+      0.4198
+    ],
+    [
+      28.0,
+      0.4315
+    ],
+    [
+      29.0,
+      0.4315
+    ],
+    [
+      30.0,
+      0.5265
+    ],
+    [
+      31.0,
+      0.5498
+    ],
+    [
+      32.0,
+      0.5498
+    ],
+    [
+      33.0,
+      0.5498
+    ],
+    [
+      34.0,
+      0.5553
+    ],
+    [
+      35.0,
+      0.5543
+    ],
+    [
+      36.0,
+      0.6491
+    ],
+    [
+      37.0,
+      0.6998
+    ],
+    [
+      38.0,
+      0.7184
+    ],
+    [
+      39.0,
+      0.7226
+    ],
+    [
+      40.0,
+      0.7241
+    ],
+    [
+      41.0,
+      0.7271
+    ],
+    [
+      42.0,
+      0.7455
+    ],
+    [
+      43.0,
+      0.7488
+    ],
+    [
+      44.0,
+      0.7492
+    ],
+    [
+      45.0,
+      0.7617
+    ],
+    [
+      46.0,
+      0.8321
+    ],
+    [
+      47.0,
+      0.8511
+    ],
+    [
+      48.0,
+      0.8535
+    ],
+    [
+      49.0,
+      0.8564
+    ],
+    [
+      50.0,
+      0.857
+    ],
+    [
+      51.0,
+      0.8586
+    ],
+    [
+      52.0,
+      0.8888
+    ],
+    [
+      52.0,
+      0.8888
+    ]
+  ],
+  "goals": [
+    {
+      "seq": 1,
+      "kind": "look",
+      "target_kind": "visual",
+      "x": 0.002,
+      "y": 0.027,
+      "outcome": "reached",
+      "duration": 1.41,
+      "planned_cost": 0.0,
+      "recoveries": 0
+    },
+    {
+      "seq": 2,
+      "kind": "look",
+      "target_kind": "visual",
+      "x": -0.048,
+      "y": -0.023,
+      "outcome": "resolved",
+      "duration": 2.0,
+      "planned_cost": 0.0,
+      "recoveries": 0
+    },
+    {
+      "seq": 3,
+      "kind": "frontier",
+      "target_kind": "map",
+      "x": 0.852,
+      "y": 0.127,
+      "outcome": "resolved",
+      "duration": 4.0,
+      "planned_cost": 0.91,
+      "recoveries": 0
+    },
+    {
+      "seq": 4,
+      "kind": "frontier",
+      "target_kind": "map",
+      "x": 2.002,
+      "y": -0.028,
+      "outcome": "resolved",
+      "duration": 2.5,
+      "planned_cost": 1.69,
+      "recoveries": 0
+    },
+    {
+      "seq": 5,
+      "kind": "frontier",
+      "target_kind": "map",
+      "x": 2.095,
+      "y": -0.644,
+      "outcome": "reached",
+      "duration": 3.62,
+      "planned_cost": 1.41,
+      "recoveries": 0
+    },
+    {
+      "seq": 6,
+      "kind": "frontier",
+      "target_kind": "map",
+      "x": 2.984,
+      "y": -2.651,
+      "outcome": "preempted",
+      "duration": 6.0,
+      "planned_cost": 2.74,
+      "recoveries": 0
+    },
+    {
+      "seq": 7,
+      "kind": "frontier",
+      "target_kind": "visual",
+      "x": 3.034,
+      "y": -1.619,
+      "outcome": "reached",
+      "duration": 2.42,
+      "planned_cost": 0.72,
+      "recoveries": 0
+    },
+    {
+      "seq": 8,
+      "kind": "frontier",
+      "target_kind": "map",
+      "x": 2.634,
+      "y": -3.03,
+      "outcome": "reached",
+      "duration": 5.97,
+      "planned_cost": 1.39,
+      "recoveries": 0
+    },
+    {
+      "seq": 9,
+      "kind": "frontier",
+      "target_kind": "visual",
+      "x": 1.484,
+      "y": -2.899,
+      "outcome": "resolved",
+      "duration": 2.0,
+      "planned_cost": 1.37,
+      "recoveries": 0
+    },
+    {
+      "seq": 10,
+      "kind": "frontier",
+      "target_kind": "map",
+      "x": 0.084,
+      "y": -2.549,
+      "outcome": "preempted",
+      "duration": 7.5,
+      "planned_cost": 2.62,
+      "recoveries": 0
+    },
+    {
+      "seq": 11,
+      "kind": "exit",
+      "target_kind": "map",
+      "x": -0.116,
+      "y": -1.224,
+      "outcome": "reached",
+      "duration": 0.52,
+      "planned_cost": 1.68,
+      "recoveries": 0
+    },
+    {
+      "seq": 12,
+      "kind": "exit",
+      "target_kind": "map",
+      "x": -0.044,
+      "y": -1.183,
+      "outcome": "reached",
+      "duration": 5.16,
+      "planned_cost": 1.55,
+      "recoveries": 0
+    }
+  ],
+  "wall_time_s": 54.470107555389404,
+  "startup_retries": 0
+}

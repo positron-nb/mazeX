@@ -1,0 +1,302 @@
+{
+  "random": {
+    "n": 1,
+    "successes": 0,
+    "success_rate": 0.0,
+    "success_ci95": [
+      0.0,
+      0.7934567085261071
+    ],
+    "statuses": {
+      "EXPLORATION_COMPLETE_EXIT_NOT_FOUND": 1
+    },
+    "distance_success": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "time_to_exit": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "distance_ratio": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "distance_all": {
+      "n": 1,
+      "mean": 29.551261387251206,
+      "median": 29.551261387251206,
+      "std": 0.0,
+      "min": 29.551261387251206,
+      "max": 29.551261387251206
+    },
+    "coverage_all": {
+      "n": 1,
+      "mean": 0.9615450791465933,
+      "median": 0.9615450791465933,
+      "std": 0.0,
+      "min": 0.9615450791465933,
+      "max": 0.9615450791465933
+    },
+    "goals_failed": {
+      "n": 1,
+      "mean": 1.0,
+      "median": 1.0,
+      "std": 0.0,
+      "min": 1.0,
+      "max": 1.0
+    },
+    "recoveries": {
+      "n": 1,
+      "mean": 10.0,
+      "median": 10.0,
+      "std": 0.0,
+      "min": 10.0,
+      "max": 10.0
+    },
+    "collisions": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "near_collisions": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "exit_detection_error": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "loc_err_mean": {
+      "n": 1,
+      "mean": 0.06554597776396369,
+      "median": 0.06554597776396369,
+      "std": 0.0,
+      "min": 0.06554597776396369,
+      "max": 0.06554597776396369
+    }
+  },
+  "nearest": {
+    "n": 1,
+    "successes": 0,
+    "success_rate": 0.0,
+    "success_ci95": [
+      0.0,
+      0.7934567085261071
+    ],
+    "statuses": {
+      "NAVIGATION_FAILURE": 1
+    },
+    "distance_success": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "time_to_exit": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "distance_ratio": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "distance_all": {
+      "n": 1,
+      "mean": 22.422028624938367,
+      "median": 22.422028624938367,
+      "std": 0.0,
+      "min": 22.422028624938367,
+      "max": 22.422028624938367
+    },
+    "coverage_all": {
+      "n": 1,
+      "mean": 0.8652787336545079,
+      "median": 0.8652787336545079,
+      "std": 0.0,
+      "min": 0.8652787336545079,
+      "max": 0.8652787336545079
+    },
+    "goals_failed": {
+      "n": 1,
+      "mean": 5.0,
+      "median": 5.0,
+      "std": 0.0,
+      "min": 5.0,
+      "max": 5.0
+    },
+    "recoveries": {
+      "n": 1,
+      "mean": 8.0,
+      "median": 8.0,
+      "std": 0.0,
+      "min": 8.0,
+      "max": 8.0
+    },
+    "collisions": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "near_collisions": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "exit_detection_error": {
+      "n": 1,
+      "mean": 0.1729783570673379,
+      "median": 0.1729783570673379,
+      "std": 0.0,
+      "min": 0.1729783570673379,
+      "max": 0.1729783570673379
+    },
+    "loc_err_mean": {
+      "n": 1,
+      "mean": 0.052888429021731825,
+      "median": 0.052888429021731825,
+      "std": 0.0,
+      "min": 0.052888429021731825,
+      "max": 0.052888429021731825
+    }
+  },
+  "weighted": {
+    "n": 1,
+    "successes": 0,
+    "success_rate": 0.0,
+    "success_ci95": [
+      0.0,
+      0.7934567085261071
+    ],
+    "statuses": {
+      "EXPLORATION_COMPLETE_EXIT_NOT_FOUND": 1
+    },
+    "distance_success": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "time_to_exit": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "distance_ratio": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "distance_all": {
+      "n": 1,
+      "mean": 23.952662560026276,
+      "median": 23.952662560026276,
+      "std": 0.0,
+      "min": 23.952662560026276,
+      "max": 23.952662560026276
+    },
+    "coverage_all": {
+      "n": 1,
+      "mean": 0.9366827253957329,
+      "median": 0.9366827253957329,
+      "std": 0.0,
+      "min": 0.9366827253957329,
+      "max": 0.9366827253957329
+    },
+    "goals_failed": {
+      "n": 1,
+      "mean": 4.0,
+      "median": 4.0,
+      "std": 0.0,
+      "min": 4.0,
+      "max": 4.0
+    },
+    "recoveries": {
+      "n": 1,
+      "mean": 34.0,
+      "median": 34.0,
+      "std": 0.0,
+      "min": 34.0,
+      "max": 34.0
+    },
+    "collisions": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "near_collisions": {
+      "n": 1,
+      "mean": 0.0,
+      "median": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "exit_detection_error": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "std": null,
+      "min": null,
+      "max": null
+    },
+    "loc_err_mean": {
+      "n": 1,
+      "mean": 0.056950304971375515,
+      "median": 0.056950304971375515,
+      "std": 0.0,
+      "min": 0.056950304971375515,
+      "max": 0.056950304971375515
+    }
+  }
+}

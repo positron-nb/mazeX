@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# colcon (if built in-tree)
+build/
+install/
+log/
+
+# Experiment outputs: commit curated campaigns explicitly (git add -f)
+results/*/logs/
+results/smoke/
+media/raw/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

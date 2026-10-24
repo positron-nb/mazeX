@@ -1,0 +1,22 @@
+{
+  "campaign": "verify_tf",
+  "out": "/mnt/c/My Projects/Maze/results",
+  "difficulty": "easy",
+  "rows": null,
+  "cols": null,
+  "seeds": [
+    0,
+    1
+  ],
+  "strategies": [
+    "nearest",
+    "random"
+  ],
+  "time_limit": 420.0,
+  "wall_factor": 2.0,
+  "render_mode": "auto",
+  "domain_id": 77,
+  "cooldown": 3.0,
+  "force": false,
+  "startup_retries": 2
+}

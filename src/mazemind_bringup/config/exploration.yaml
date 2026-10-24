@@ -1,0 +1,103 @@
+# MazeMind exploration + exit-detection parameters.
+# See docs/algorithm.md for the meaning of every feature and weight.
+explorer:
+  ros__parameters:
+    strategy: weighted              # random | nearest | weighted (overridden by launch arg)
+    random_seed: 0                  # seeds the random strategy (launch passes the maze seed)
+    time_limit: 600.0               # simulated seconds after the system is ready
+
+    map_topic: /map
+    scan_topic: /scan
+    nav_action: navigate_to_pose
+    global_frame: map
+    robot_frame: base_footprint
+
+    # --- loop timing
+    tick_period: 0.5
+    replan_period: 2.0              # re-evaluate frontiers at most this often (and only on new maps)
+
+    # --- frontier extraction (SLAM map is 0.05 m/cell)
+    min_frontier_size: 8            # cells; 0.4 m. Smaller clusters are noise / slivers
+    robot_radius: 0.15              # m; traversability = free and farther than this from obstacles
+    gap_fill_cells: 2               # unknown cells this close to known free count as traversable
+    border_cells: 3                 # never target the outer rim of the SLAM map array
+    costmap_topic: /global_costmap/costmap
+    costmap_margin: 0.15            # m; defer targets Nav2's global costmap does not cover yet
+    clearance_penalty: 2.0          # geodesic step cost x (1 + 2 p), p = closeness to walls in [0, 1]
+    min_goal_distance: 0.35         # m; ignore frontiers the robot is already on
+    info_radius: 2.0                # m; ray-cast radius for visible-unknown information gain
+    info_rays: 72
+    safe_clearance: 0.35            # m; path bottleneck at which success_estimate = 1
+    clearance_cap: 0.45             # m; clearance normalisation (half of a 0.9 m corridor)
+
+    # --- visual search: the exit can only be recognised by the camera, so the
+    #     explorer also targets mapped floor the camera has not looked at yet
+    visual_search: true
+    camera_frame: camera_link
+    camera_view_range: 2.5          # m; floor counts as camera-seen only this close. 3.5 m let the
+                                    # robot mark areas seen from where the marker was a 7 px sliver
+    camera_hfov: 1.3                # rad; matches the URDF camera
+    camera_rays: 48
+    min_unseen_cells: 60            # 0.15 m^2; smaller unseen pockets are ignored
+    look_distance: 0.6              # m; closer unseen regions trigger a Nav2 spin instead of a drive
+    spin_action: spin
+
+    # --- weighted strategy (all features normalised to [0, 1])
+    w_info: 1.0                     # prefer frontiers that reveal more unknown cells
+    w_size: 0.3                     # mild preference for wide openings
+    w_clearance: 0.3                # prefer targets away from walls
+    w_success: 0.5                  # prefer paths without tight bottlenecks
+    w_distance: 1.2                 # strongest term: avoid long back-tracking trips
+    w_revisit: 0.8                  # discourage regions already visited without resolving
+    w_failure: 1.5                  # strongly avoid regions where Nav2 failed
+
+    # --- anti-oscillation
+    resolve_radius: 0.4             # m; goal is "resolved" if no frontier cell remains this close
+    min_commit_time: 4.0            # s; keep a goal at least this long before preempting it
+    switch_margin_score: 0.25       # weighted: new score must beat current by this much
+    switch_margin_distance: 0.5     # nearest: new target must be this much closer (m)
+
+    # --- failure handling
+    region_radius: 0.5              # m; goals within this radius share failure/attempt counts
+    max_failures_per_region: 2      # blacklist after this many failures
+    max_attempts_per_region: 3      # ... or after this many attempts that did not resolve it
+    goal_timeout_base: 30.0         # s
+    goal_timeout_per_meter: 8.0     # s per metre of planned travel
+    stuck_window: 20.0              # s
+    stuck_distance: 0.15            # m; less movement than this in the window = stuck
+    max_consecutive_failures: 6     # -> NAVIGATION_FAILURE
+    completion_checks: 4            # consecutive empty evaluations (>= 1 s apart) before COMPLETE
+    startup_timeout: 120.0          # wall-clock s to wait for map, TF and Nav2
+    sensor_timeout: 10.0            # sim s without LiDAR -> SIMULATION_ERROR
+    nav_unavailable_timeout: 30.0   # sim s without Nav2 action server -> SIMULATION_ERROR
+
+    # --- exit approach
+    exit_approach_offset: 0.40      # m in front of the detected marker
+    # must be >= approach offset + Nav2 xy_goal_tolerance (0.25), or a goal Nav2
+    # reports as reached can still fail the arrival check (seen in a pilot run: 0.63 m)
+    exit_arrival_distance: 0.70     # m from the marker along its normal -> EXIT_REACHED
+    exit_lateral_tolerance: 0.30    # m; and at most this far sideways (in front of the door)
+    max_exit_attempts: 3            # failed (Nav2) approach goals before NAVIGATION_FAILURE
+    max_exit_goals: 8               # total approach goals incl. re-targets after estimate refinement
+
+exit_detector:
+  ros__parameters:
+    global_frame: map
+    image_topic: /camera/image_raw
+    camera_info_topic: /camera/camera_info
+    scan_topic: /scan
+    process_rate: 10.0              # Hz (every camera frame: brief passes still validate)
+    h_min: 45                       # OpenCV HSV hue range for the green marker (green = 60)
+    h_max: 85
+    s_min: 120
+    v_min: 60
+    min_area_frac: 0.002            # blob must cover 0.2 % of the image (~150 px at 320x240)
+    marker_width: 0.6               # m; used for the apparent-width consistency check
+    min_points: 2                   # LiDAR returns inside the blob's columns (1 deg spacing; narrow
+                                    # oblique blobs span only ~3 bearings, see troubleshooting.md)
+    max_range: 4.0                  # m
+    max_scan_age: 0.15              # s between image and the closest scan (motion compensated via TF)
+    max_tf_age: 0.1                 # s; latest-TF fallback when the exact stamp is not available yet
+    confirm_count: 3                # consistent observations required
+    confirm_window: 4.0             # s
+    cluster_radius: 0.3             # m

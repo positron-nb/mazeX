@@ -1,0 +1,21 @@
+{
+  "campaign": "pilot_medium_v2",
+  "out": "/mnt/c/My Projects/Maze/results",
+  "difficulty": "medium",
+  "rows": null,
+  "cols": null,
+  "seeds": [
+    0
+  ],
+  "strategies": [
+    "random",
+    "nearest",
+    "weighted"
+  ],
+  "time_limit": 600.0,
+  "wall_factor": 2.0,
+  "render_mode": "auto",
+  "domain_id": 77,
+  "cooldown": 3.0,
+  "force": false
+}
