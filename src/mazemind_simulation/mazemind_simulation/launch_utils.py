@@ -26,8 +26,9 @@ GROUND_TRUTH_BRIDGE_TOPICS = [
     '/ground_truth/contacts@ros_gz_interfaces/msg/Contacts[ignition.msgs.Contacts',
 ]
 
-# Bridged only when recording a demo (the overhead view costs rendering time).
+# Bridged only when recording a demo (the views cost rendering time).
 OVERHEAD_CAMERA_TOPIC = '/ground_truth/overhead_camera@sensor_msgs/msg/Image[ignition.msgs.Image'
+SCENE_CAMERA_TOPIC = '/ground_truth/scene_camera@sensor_msgs/msg/Image[ignition.msgs.Image'
 
 
 def running_in_wsl() -> bool:
@@ -66,6 +67,27 @@ def rviz_environment(mode: str) -> Dict[str, str]:
     return render_environment(mode)
 
 
+def rviz_view(maze_json: str, window_px: int = 860) -> Dict[str, str]:
+    """TopDownOrtho view parameters that frame the maze in the robot's map frame.
+
+    The SLAM map frame starts at the spawn pose, so the maze centre and the
+    rotation that puts world north at the top are computed from the spawn pose.
+    Uses the ground-truth file for display only; nothing is sent to the robot.
+    """
+    import json
+    import math
+    with open(maze_json, encoding='utf-8') as fh:
+        gt = json.load(fh)
+    sx, sy, yaw = gt['start']['x'], gt['start']['y'], gt['start']['yaw']
+    dx, dy = gt['width'] / 2 - sx, gt['height'] / 2 - sy
+    c, s = math.cos(yaw), math.sin(yaw)
+    return {'@X@': f'{c * dx + s * dy:.3f}', '@Y@': f'{-s * dx + c * dy:.3f}',
+            # TopDownOrtho angle = -spawn yaw puts world north at the top (verified
+            # against Gazebo's top-down camera; +yaw showed the map rotated 180 deg)
+            '@ANGLE@': f'{-yaw:.4f}',
+            '@SCALE@': f'{window_px / (max(gt["width"], gt["height"]) + 1.2):.2f}'}
+
+
 def maze_from_launch_args(get) -> Dict[str, str]:
     """Generate (or reuse) a maze from launch-configuration values.
 
@@ -86,7 +108,8 @@ def maze_from_launch_args(get) -> Dict[str, str]:
         overrides['loop_fraction'] = float(get('loop_fraction'))
     cfg = MazeConfig.from_difficulty(get('difficulty'), **overrides)
     data_dir = os.path.expanduser(get('data_dir') or default_data_dir())
-    return build_and_write(cfg, os.path.join(data_dir, 'worlds'))
+    rtf = float(get('real_time_factor') or 1.0)
+    return build_and_write(cfg, os.path.join(data_dir, 'worlds'), real_time_factor=rtf)
 
 
 MAZE_LAUNCH_ARGS = {
@@ -99,4 +122,5 @@ MAZE_LAUNCH_ARGS = {
     'start_row': ('0', 'Start cell row'),
     'start_col': ('0', 'Start cell column'),
     'data_dir': ('', 'Where generated worlds are written (default ~/.mazemind)'),
+    'real_time_factor': ('1.0', 'Simulation speed target (lower it to record smoothly on slow PCs)'),
 }

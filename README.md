@@ -10,21 +10,23 @@ its camera, and stops in front of it. A separate evaluator, the only component t
 truth, scores every run.
 
 <!-- SHOWCASE_START -->
-![MazeMind escaping an 18 m x 18 m maze](media/showcase_preview.gif)
+![MazeMind escaping an 18 m x 18 m maze](media/mazemind_showcase_preview.gif)
 
-**Featured run ([full video](media/showcase_18m_s3_weighted.mp4), 8× time-lapse):** an **18 m × 18 m
-maze with a 12 × 12 grid** (1.5 m cells, 10 % loops, 16 dead ends). The robot started with no map,
-explored, recognised the exit marker with its camera and stopped in front of it. It travelled **170 m in
-651 simulated seconds** with **0 wall contacts, 0 failed navigation goals and 0 recoveries**. Ground
-truth confirmed it ended in the exit cell, 0.63 m from the door.
+**Featured run:** [8× video](media/mazemind_showcase_18m_fast.mp4) · [1× ending clip](media/mazemind_showcase_18m_ending.mp4).
+An **18 m × 18 m maze with a 12 × 12 grid** (1.5 m cells, 10 % loops, 16 dead ends). The robot started
+with no map, explored, recognised the exit sign with its camera, turned to face it and stopped. It
+travelled **210 m in 796 simulated seconds** with **0 wall contacts, 0 failed navigation goals and
+0 recoveries**. Ground truth confirmed it ended in the exit cell, 0.64 m from the door.
 
-Left: Gazebo's top-down camera (simulator view). Right: the robot's own SLAM map, rotated to the same
-orientation for display, with live LiDAR (orange), frontier targets, the Nav2 plan (green), the travelled
-path (cyan) and the exit detection (green star). Bottom: the robot camera with the detector's box, and
-live metrics from the ground-truth evaluator.
+Left: Gazebo's 3D view. Right: the robot's own SLAM map, rotated to the same orientation, with live LiDAR
+(orange), frontier targets, the Nav2 plan (green), the travelled path (cyan) and the exit detection
+(green star). Bottom: the robot camera with the detector's box, and live metrics from the ground-truth
+evaluator. Every frame is rendered from the running simulation at 30 fps of simulated time.
 
-A second take on the same maze escaped in **134.5 m / 526 s**. Simulator, SLAM and Nav2 timing are not
-deterministic, so one maze is not a benchmark. The 60-run comparison below is.
+The same maze has been escaped three times so far: **134.5 m / 526 s**, **170.3 m / 651 s** and
+**209.6 m / 796 s** (this video). Simulator, SLAM and Nav2 timing are not deterministic, so one maze is
+not a benchmark. The 60-run comparison below is. In this run the map drifted ~2° over 210 m (SLAM
+loop closure is off), and the exit-sign estimate was 0.69 m off, still within the arrival tolerance.
 <!-- SHOWCASE_END -->
 
 ## Results at a glance
@@ -54,6 +56,9 @@ ground truth.
 ![Strategy comparison, 6x6 mazes](results/medium_main/comparison.png)
 
 Full methodology, paired statistics and failure analysis: [docs/experiments.md](docs/experiments.md).
+The 60 campaign runs were recorded before the visual overhaul (brick walls with pillars, chequered
+floor, clean GUI). The exploration algorithm and parameters are unchanged; the new world changes how
+things look, and the robot now also turns to face the exit before stopping.
 
 ## How it works
 
@@ -100,18 +105,19 @@ Tested on **Windows 11 + WSL2 Ubuntu 22.04 (WSLg)**, **ROS 2 Humble**, **Gazebo 
 sudo apt install ros-humble-desktop ros-humble-ros-gz ros-humble-navigation2 \
   ros-humble-nav2-bringup ros-humble-slam-toolbox ros-humble-xacro ros-humble-cv-bridge \
   python3-scipy python3-opencv python3-matplotlib python3-pytest rsync ffmpeg
-git clone https://github.com/<you>/MazeMind.git && cd MazeMind
+git clone https://github.com/positron-nb/mazeX.git && cd mazeX
 bash scripts/build.sh        # builds in ~/mazemind_ws (works from a Windows drive too)
 source scripts/env.sh
 ```
 
 ```bash
-# Autonomous run with Gazebo + RViz
-ros2 launch mazemind_bringup mazemind.launch.py difficulty:=medium seed:=3 strategy:=weighted
+# Autonomous run with Gazebo + RViz (gpu_override: much lighter RViz; drop it if RViz is white)
+ros2 launch mazemind_bringup mazemind.launch.py difficulty:=medium seed:=3 strategy:=weighted \
+  rviz_render_mode:=gpu_override
 
-# Big maze, headless, record a demo video (8x time-lapse)
+# Big maze, headless: record a smooth 1080p demo (1x, 8x and ending-clip versions)
 ros2 launch mazemind_bringup mazemind.launch.py difficulty:=showcase seed:=3 headless:=true \
-  rviz:=false record:=true record_timelapse:=8 record_path:=$MAZEMIND_REPO/media/demo.mp4
+  rviz:=false record:=true real_time_factor:=0.5 record_path:=$MAZEMIND_REPO/media/demo.mp4
 
 # Strategy comparison campaign (fresh simulation per run, resumable) + analysis
 ros2 run mazemind_evaluation run_experiments --campaign my_test --difficulty medium --seeds 0 1 2
@@ -125,7 +131,8 @@ ros2 run mazemind_simulation generate_maze --difficulty medium --seed 3 --print
 
 Main launch arguments: `difficulty` (`tiny|easy|medium|hard|showcase`), `seed`, `strategy`
 (`random|nearest|weighted`), `time_limit`, `headless`, `rviz`, `record`, `render_mode`.
-WSL rendering problems (Gazebo OGRE crash, white RViz window) are handled automatically and explained in
+Watching and recording guide: [docs/demo_recording_plan.md](docs/demo_recording_plan.md). WSL rendering
+problems (Gazebo OGRE crash, white or slow RViz, missing X socket) are explained in
 [docs/troubleshooting.md](docs/troubleshooting.md).
 
 ## Tests

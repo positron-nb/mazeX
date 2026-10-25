@@ -24,12 +24,12 @@ def maze_basename(cfg: MazeConfig) -> str:
     return f'maze_{cfg.rows}x{cfg.cols}_s{cfg.seed}_l{int(round(cfg.loop_fraction * 100))}'
 
 
-def build_and_write(cfg: MazeConfig, out_dir: str) -> Dict[str, str]:
+def build_and_write(cfg: MazeConfig, out_dir: str, real_time_factor: float = 1.0) -> Dict[str, str]:
     """Generate the maze for ``cfg`` and write ``<name>.sdf`` and ``<name>.json``."""
     maze = generate_maze(cfg)
     os.makedirs(out_dir, exist_ok=True)
     base = os.path.join(out_dir, maze_basename(cfg))
-    write_world(maze, base + '.sdf')
+    write_world(maze, base + '.sdf', real_time_factor=real_time_factor)
     maze.save_json(base + '.json')
     start = maze.to_dict()['start']
     return {'world': base + '.sdf', 'ground_truth': base + '.json',

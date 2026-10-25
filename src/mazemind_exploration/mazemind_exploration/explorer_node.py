@@ -31,7 +31,7 @@ from action_msgs.msg import GoalStatus
 from geometry_msgs.msg import Point, PoseStamped, Twist
 from builtin_interfaces.msg import Duration as DurationMsg
 from nav2_msgs.action import NavigateToPose, Spin
-from nav_msgs.msg import OccupancyGrid
+from nav_msgs.msg import OccupancyGrid, Path
 from rclpy.action import ActionClient
 from rclpy.duration import Duration
 from rclpy.node import Node
@@ -153,6 +153,10 @@ class ExplorerNode(Node):
         self.outcome_pub = self.create_publisher(String, outcomes.OUTCOME_TOPIC, latched)
         self.marker_pub = self.create_publisher(MarkerArray, '/mazemind/frontiers', 10)
         self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        # travelled path from the robot's own SLAM pose (visualisation)
+        self.trail_pub = self.create_publisher(Path, '/mazemind/trail', 1)
+        self.trail = Path()
+        self.trail.header.frame_id = self.global_frame
 
         # ---------------------------------------------------------------- state
         self.state = WAITING
@@ -183,6 +187,7 @@ class ExplorerNode(Node):
         self.exit_detect_time: Optional[float] = None
         self.exit_attempts = 0
         self.exit_failures = 0
+        self.exit_faced = False
         self.t_ready: Optional[float] = None
         self.wall_start = time.time()
         self.distance_est = 0.0
@@ -230,6 +235,16 @@ class ExplorerNode(Node):
         self.pose = new
         if self.goal is not None:
             self.stuck.update(self.now(), new[0], new[1])
+        if self.state not in (WAITING, FINISHED):
+            last = self.trail.poses[-1].pose.position if self.trail.poses else None
+            if last is None or math.hypot(new[0] - last.x, new[1] - last.y) > 0.05:
+                ps = PoseStamped()
+                ps.header.frame_id = self.global_frame
+                ps.pose.position.x, ps.pose.position.y = new[0], new[1]
+                ps.pose.orientation.w = 1.0
+                self.trail.poses.append(ps)
+                self.trail.header.stamp = self.get_clock().now().to_msg()
+                self.trail_pub.publish(self.trail)
 
     def _observe_camera(self) -> None:
         if self.grid is None or self.state in (WAITING, FINISHED):
@@ -660,6 +675,20 @@ class ExplorerNode(Node):
         lateral = -ox * math.sin(n) + oy * math.cos(n)
         if (0.0 < along_normal <= self.exit_arrival_distance
                 and abs(lateral) <= self.exit_lateral_tolerance):
+            # Turn to face the exit before reporting (Nav2 accepts any final heading):
+            # a last visual confirmation, and the camera ends on the exit sign.
+            if (self.goal is not None and self.goal.kind == 'face'
+                    and now - self.goal.sent <= self.goal.timeout):
+                return
+            facing = math.remainder(math.atan2(dy - self.pose[1], dx - self.pose[0]) - self.pose[2],
+                                    2 * math.pi)
+            if not self.exit_faced and abs(facing) > 0.35:
+                self.exit_faced = True
+                if self.goal is not None:
+                    self._close_goal(mem.PREEMPTED, cancel=True)
+                self._send('face', self.pose[0], self.pose[1], self.pose[2], 0.0, 0.0, now,
+                           spin_delta=facing)
+                return
             self._finish(outcomes.EXIT_REACHED,
                          f'robot in front of the detected exit marker ({along_normal:.2f} m out, '
                          f'{lateral:+.2f} m lateral)')
@@ -752,7 +781,7 @@ class ExplorerNode(Node):
         cells.header.stamp = stamp
         cells.ns, cells.id, cells.type = 'frontier_cells', 0, Marker.POINTS
         cells.scale.x = cells.scale.y = self.grid.resolution
-        cells.color = ColorRGBA(r=0.0, g=0.8, b=1.0, a=0.9)
+        cells.color = ColorRGBA(r=0.35, g=0.45, b=1.0, a=0.9)   # blue; cyan = travelled path
         cells.pose.orientation.w = 1.0
         for f in self.last_frontiers:
             if f.kind != 'map':
@@ -765,11 +794,11 @@ class ExplorerNode(Node):
             unseen = Marker()
             unseen.header = cells.header
             unseen.ns, unseen.id, unseen.type = 'unseen_cells', 0, Marker.POINTS
-            unseen.scale.x = unseen.scale.y = self.grid.resolution * 0.6
-            unseen.color = ColorRGBA(r=0.9, g=0.2, b=0.9, a=0.5)
+            unseen.scale.x = unseen.scale.y = self.grid.resolution * 0.5
+            unseen.color = ColorRGBA(r=0.9, g=0.3, b=0.9, a=0.22)   # faint: context, not clutter
             unseen.pose.orientation.w = 1.0
             rows, cols = np.nonzero(self.last_unseen)
-            for r, c in zip(rows[::3], cols[::3]):
+            for r, c in zip(rows[::6], cols[::6]):
                 x, y = self.grid.cell_to_world(r, c)
                 unseen.points.append(Point(x=x, y=y, z=0.01))
             arr.markers.append(unseen)

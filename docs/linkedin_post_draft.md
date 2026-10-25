@@ -1,7 +1,8 @@
 # LinkedIn post (ready to paste)
 
-Attach `media/showcase_18m_s3_weighted.mp4` (85 s, 1280×860, H.264; LinkedIn accepts it as-is).
-Replace `<GitHub link>` after you push the repo. Every number below is from `results/`.
+Attach `media/mazemind_showcase_18m_fast.mp4` (100 s, 1920×1080, 30 fps, 8× time-lapse) or the 35 s
+1× `media/mazemind_showcase_18m_ending.mp4`. Both are H.264, which LinkedIn accepts as-is.
+Every number below is from `results/`.
 
 ---
 
@@ -18,7 +19,7 @@ expect to need: the 360° LiDAR "finishes" mapping long before the forward camer
 every corridor. My first version mapped 96 % of a maze and never saw the exit. So the robot now also
 tracks what its *camera* has seen and explores that.
 
-In the video it escapes an 18 m × 18 m maze (12 × 12 grid), travelling 170 m in 651 simulated seconds
+In the video it escapes an 18 m × 18 m maze (12 × 12 grid), travelling 210 m in 796 simulated seconds
 with zero wall contacts and zero failed navigation goals.
 
 I also benchmarked it properly: 60 runs, 3 strategies on identical mazes, every run verified against
@@ -32,7 +33,7 @@ The best part was debugging with ground truth: false SLAM loop closures in look-
 odometry error from wheel collision geometry, and a camera that dropped 70 % of its frames because of
 a TF timestamp issue. Each one was found by measuring before fixing.
 
-Code, docs and every run's raw data: <GitHub link>
+Code, docs and every run's raw data: https://github.com/positron-nb/mazeX
 
 What would you add to the frontier score: a bias toward the outer walls, or something smarter?
 

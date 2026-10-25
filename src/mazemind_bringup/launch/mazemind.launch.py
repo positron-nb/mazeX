@@ -22,11 +22,23 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 from mazemind_simulation.launch_utils import (MAZE_LAUNCH_ARGS, maze_from_launch_args,
-                                              rviz_environment)
+                                              rviz_environment, rviz_view)
 
 
 def _truthy(value: str) -> bool:
     return value.lower() in ('1', 'true', 'yes', 'on')
+
+
+def _rviz_config(bringup: str, maze: dict) -> str:
+    """Fill the RViz template so the view frames this maze, rotated to match Gazebo."""
+    with open(os.path.join(bringup, 'rviz', 'mazemind.rviz'), encoding='utf-8') as fh:
+        text = fh.read()
+    for key, value in rviz_view(maze['ground_truth']).items():
+        text = text.replace(key, value)
+    path = os.path.splitext(maze['world'])[0] + '.rviz'
+    with open(path, 'w', encoding='utf-8') as fh:
+        fh.write(text)
+    return path
 
 
 def _setup(context, *args, **kwargs):
@@ -94,14 +106,15 @@ def _setup(context, *args, **kwargs):
             package='mazemind_evaluation', executable='media_recorder', name='media_recorder',
             output='screen',
             parameters=[{'use_sim_time': True, 'output': os.path.expanduser(record_path),
-                         'timelapse': float(get('record_timelapse')),
+                         'fast_factor': float(get('record_fast')),
+                         'view': get('record_view'),
                          'display_yaw': float(maze['yaw']),
                          'title': f"MazeMind | {get('difficulty')} maze, seed {get('seed')}"}]))
 
     if _truthy(get('rviz')):
         actions.append(Node(
             package='rviz2', executable='rviz2', name='rviz2', output='log',
-            arguments=['-d', os.path.join(bringup, 'rviz', 'mazemind.rviz')],
+            arguments=['-d', _rviz_config(bringup, maze)],
             parameters=[{'use_sim_time': True}],
             additional_env=rviz_environment(get('rviz_render_mode'))))
     return actions
@@ -115,7 +128,8 @@ def generate_launch_description():
         DeclareLaunchArgument('render_mode', default_value='auto'),
         DeclareLaunchArgument('rviz', default_value='true'),
         DeclareLaunchArgument('rviz_render_mode', default_value='auto',
-                              description='auto (software on WSL) | gpu_override | software | native'),
+                              description='auto (software on WSL) | gpu_override (much lighter; '
+                                          'use it if RViz is not a white window) | software | native'),
         DeclareLaunchArgument('explore', default_value='true'),
         DeclareLaunchArgument('evaluate', default_value='true'),
         DeclareLaunchArgument('strategy', default_value='weighted',
@@ -125,9 +139,12 @@ def generate_launch_description():
         DeclareLaunchArgument('run_id', default_value='manual'),
         DeclareLaunchArgument('results_dir', default_value='~/.mazemind/results'),
         DeclareLaunchArgument('record', default_value='false',
-                              description='Record a side-by-side demo video (overhead sim view + SLAM)'),
-        DeclareLaunchArgument('record_timelapse', default_value='4',
-                              description='Video speed-up: video seconds = sim seconds / this'),
+                              description='Record a 1080p demo video (Gazebo view + robot map), '
+                                          '30 fps of sim time'),
+        DeclareLaunchArgument('record_fast', default_value='8',
+                              description='Speed-up of the extra *_fast.mp4 version'),
+        DeclareLaunchArgument('record_view', default_value='oblique',
+                              description='Gazebo view in the video: oblique | top'),
         DeclareLaunchArgument('record_path', default_value='',
                               description='Output .mp4 (default ~/.mazemind/media/<run>.mp4)'),
         DeclareLaunchArgument('shutdown_on_finish', default_value='false',

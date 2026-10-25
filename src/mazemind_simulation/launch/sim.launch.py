@@ -17,7 +17,7 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
 from mazemind_simulation.launch_utils import (BRIDGE_TOPICS, GROUND_TRUTH_BRIDGE_TOPICS,
-                                              MAZE_LAUNCH_ARGS, OVERHEAD_CAMERA_TOPIC,
+                                              MAZE_LAUNCH_ARGS, OVERHEAD_CAMERA_TOPIC, SCENE_CAMERA_TOPIC,
                                               maze_from_launch_args, render_environment)
 from mazemind_simulation.world_writer import WORLD_NAME
 
@@ -51,7 +51,7 @@ def _setup(context, *args, **kwargs):
 
     topics = BRIDGE_TOPICS + GROUND_TRUTH_BRIDGE_TOPICS
     if get('overhead_camera').lower() in ('1', 'true', 'yes'):
-        topics = topics + [OVERHEAD_CAMERA_TOPIC]
+        topics = topics + [OVERHEAD_CAMERA_TOPIC, SCENE_CAMERA_TOPIC]
     bridge = Node(
         package='ros_gz_bridge', executable='parameter_bridge', name='gz_bridge', output='screen',
         arguments=topics, parameters=[{'use_sim_time': True}])

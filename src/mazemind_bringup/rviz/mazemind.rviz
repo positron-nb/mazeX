@@ -1,28 +1,7 @@
-Panels:
-  - Class: rviz_common/Displays
-    Help Height: 0
-    Name: Displays
-    Property Tree Widget:
-      Expanded: ~
-      Splitter Ratio: 0.55
-    Tree Height: 400
-  - Class: rviz_common/Views
-    Expanded:
-      - /Current View1
-    Name: Views
-    Splitter Ratio: 0.5
+Panels: []
 Visualization Manager:
   Class: ""
   Displays:
-    - Class: rviz_default_plugins/Grid
-      Name: Grid
-      Enabled: true
-      Cell Size: 1
-      Color: 160; 160; 164
-      Plane: XY
-      Plane Cell Count: 20
-      Reference Frame: <Fixed Frame>
-      Value: true
     - Class: rviz_default_plugins/Map
       Name: SLAM map
       Enabled: true
@@ -33,12 +12,12 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
       Color Scheme: map
-      Alpha: 0.9
-      Draw Behind: false
+      Alpha: 1
+      Draw Behind: true
       Value: true
     - Class: rviz_default_plugins/Map
       Name: Global costmap
-      Enabled: true
+      Enabled: false
       Topic:
         Value: /global_costmap/costmap
         Depth: 1
@@ -46,8 +25,34 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
       Color Scheme: costmap
-      Alpha: 0.35
+      Alpha: 0.3
       Draw Behind: false
+      Value: false
+    - Class: rviz_default_plugins/Path
+      Name: Travelled path
+      Enabled: true
+      Topic:
+        Value: /mazemind/trail
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Color: 0; 200; 230
+      Line Style: Billboards
+      Line Width: 0.06
+      Value: true
+    - Class: rviz_default_plugins/Path
+      Name: Global plan
+      Enabled: true
+      Topic:
+        Value: /plan
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Color: 40; 200; 40
+      Line Style: Billboards
+      Line Width: 0.05
       Value: true
     - Class: rviz_default_plugins/LaserScan
       Name: LiDAR
@@ -59,36 +64,10 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Best Effort
       Color Transformer: FlatColor
-      Color: 255; 40; 40
-      Size (m): 0.03
+      Color: 255; 140; 0
+      Size (m): 0.05
       Style: Flat Squares
-      Value: true
-    - Class: rviz_default_plugins/RobotModel
-      Name: Robot
-      Enabled: true
-      Description Source: Topic
-      Description Topic:
-        Value: /robot_description
-        Depth: 5
-        Durability Policy: Transient Local
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-      Visual Enabled: true
-      Collision Enabled: false
-      Alpha: 1
-      Value: true
-    - Class: rviz_default_plugins/Path
-      Name: Global plan
-      Enabled: true
-      Topic:
-        Value: /plan
-        Depth: 5
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Reliable
-      Color: 25; 255; 0
-      Line Style: Lines
-      Line Width: 0.03
+      Decay Time: 0
       Value: true
     - Class: rviz_default_plugins/MarkerArray
       Name: Frontiers
@@ -110,30 +89,33 @@ Visualization Manager:
         History Policy: Keep Last
         Reliability Policy: Reliable
       Value: true
+    - Class: rviz_default_plugins/RobotModel
+      Name: Robot
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Visual Enabled: true
+      Collision Enabled: false
+      Alpha: 1
+      Value: true
     - Class: rviz_default_plugins/MarkerArray
       Name: Live metrics
-      Enabled: true
+      Enabled: false
       Topic:
         Value: /mazemind/metrics/markers
         Depth: 5
         Durability Policy: Volatile
         History Policy: Keep Last
         Reliability Policy: Reliable
-      Value: true
-    - Class: rviz_default_plugins/Image
-      Name: Camera
-      Enabled: true
-      Topic:
-        Value: /mazemind/exit/debug_image
-        Depth: 2
-        Durability Policy: Volatile
-        History Policy: Keep Last
-        Reliability Policy: Best Effort
-      Normalize Range: true
-      Value: true
+      Value: false
   Enabled: true
   Global Options:
-    Background Color: 48; 48; 48
+    Background Color: 38; 41; 48
     Fixed Frame: map
     Frame Rate: 30
   Name: root
@@ -141,14 +123,9 @@ Visualization Manager:
     - Class: rviz_default_plugins/Interact
       Hide Inactive Objects: true
     - Class: rviz_default_plugins/MoveCamera
-    - Class: rviz_default_plugins/Select
     - Class: rviz_default_plugins/SetGoal
       Topic:
         Value: /goal_pose
-    - Class: rviz_default_plugins/PublishPoint
-      Single click: true
-      Topic:
-        Value: /clicked_point
   Transformation:
     Current:
       Class: rviz_default_plugins/TF
@@ -157,15 +134,21 @@ Visualization Manager:
     Current:
       Class: rviz_default_plugins/TopDownOrtho
       Name: Current View
-      Angle: 0
-      Scale: 80
-      X: 1.5
-      Y: 1.5
+      Angle: @ANGLE@
+      Scale: @SCALE@
+      X: @X@
+      Y: @Y@
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
     Saved: ~
 Window Geometry:
+  Displays:
+    collapsed: true
+  Views:
+    collapsed: true
+  Hide Left Dock: true
+  Hide Right Dock: true
   Height: 900
-  Width: 1200
+  Width: 1000
   X: 0
   Y: 0

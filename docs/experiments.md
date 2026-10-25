@@ -123,9 +123,11 @@ shortest route 57 m, `weighted` strategy, recorded with `record:=true` (`results
 | Take | Outcome (verified) | Distance | Time (sim) | Goals / failed / recoveries | Contacts / near | SLAM error mean / max | Marker error |
 |---|---|---|---|---|---|---|---|
 | 1 | EXIT_REACHED ✔ | 134.5 m | 525.5 s | 74 / 0 / 0 | 0 / 0 | 0.24 m / 0.51 m | 0.35 m |
-| 2 (video) | EXIT_REACHED ✔ | 170.3 m | 651.0 s | 91 / 0 / 0 | 0 / 0 | 0.11 m / 0.32 m | 0.33 m |
+| 2 | EXIT_REACHED ✔ | 170.3 m | 651.0 s | 91 / 0 / 0 | 0 / 0 | 0.11 m / 0.32 m | 0.33 m |
+| 3 (featured video, new visuals, RTF 0.5) | EXIT_REACHED ✔ | 209.6 m | 795.5 s | 102 / 0 / 0 | 0 / 0 | 0.32 m / 0.75 m | 0.69 m |
 
-Both takes ran on the same maze with the same code. The 27 % distance difference is run-to-run
+Takes 1–2 ran with the earlier world appearance; take 3 with the current visuals and the final
+face-the-exit turn (same exploration algorithm). The spread (134–210 m) is run-to-run
 variability from nondeterministic simulator, SLAM and Nav2 timing. On this larger maze the SLAM pose
 error grows to decimetres without loop closure, and the marker estimate is correspondingly less
 accurate (still within the arrival tolerances).

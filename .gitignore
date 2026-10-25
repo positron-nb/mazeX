@@ -20,3 +20,6 @@ media/raw/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Full-length 1x showcase video is ~70 MB: keep it local; the _fast and _ending cuts are committed
+media/mazemind_showcase_18m.mp4

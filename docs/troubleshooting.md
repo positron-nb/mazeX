@@ -23,10 +23,32 @@ were measured at real-time factor 1.00 with LiDAR and camera at 10 Hz:
 
 If the override ever fails on a different driver, use `render_mode:=software`.
 
+## GUI windows don't open after a WSL restart (`qt.qpa.xcb: could not connect to display`)
+
+After WSL restarts, the X socket link `/tmp/.X11-unix/X0` can be missing (the real socket lives in
+`/mnt/wslg/.X11-unix/`). `scripts/env.sh` recreates the link automatically. Make sure you
+`source scripts/env.sh` in every new terminal.
+
+## Gazebo GUI crashes: `Could not load the Qt platform plugin "xcb" in .../cv2/qt/plugins`
+
+pip's `opencv-python` (in `~/.local`) sets `QT_QPA_PLATFORM_PLUGIN_PATH` to its own Qt plugins when
+imported. If a launch file imports OpenCV, child processes inherit that variable and Qt GUIs crash.
+MazeMind's launch path no longer imports OpenCV.
+
+## Image textures make walls invisible to the robot camera
+
+An attempt to give walls and floor PBR albedo-map textures (Fortress, ogre2, WSL) made the textured
+walls **invisible in the robot's camera** (only their shadows rendered), although the GUI showed them
+dark. That would have broken exit detection, so the world uses plain coloured materials: brick-coloured
+walls, grey pillars and a chequered floor.
+
 ## RViz opens as a blank white window (WSLg)
 
 RViz's OGRE renderer on WSLg's D3D12 GPU path can show only a white window. `mazemind.launch.py`
-starts RViz with software OpenGL (llvmpipe) on WSL by default (`rviz_render_mode:=auto`). If you start
+starts RViz with software OpenGL (llvmpipe) on WSL by default (`rviz_render_mode:=auto`). Software
+rendering is heavy: 100–150 % CPU measured, which makes everything lag. Try
+`rviz_render_mode:=gpu_override` first (20–30 % CPU, rendered correctly in tests); fall back to the
+default only if you get the white window. If you start
 RViz yourself, run `LIBGL_ALWAYS_SOFTWARE=1 rviz2 -d <config>`. Also, don't run an experiment campaign
 at the same time: RViz becomes unresponsive when the CPU is saturated.
 
